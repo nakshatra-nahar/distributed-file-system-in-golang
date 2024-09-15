@@ -1,39 +1,70 @@
-# Peer-to-peer content distributed file system
+# Peer-to-Peer Content Addressable Distributed File System (CADFS)
 
 ## Overview
 
-A Content Addressable File System (CADFS) is a type of file system that uses content-based addressing to manage and retrieve data across a network of nodes. Unlike traditional file systems that use hierarchical paths or filenames to locate data, a CADFS identifies and accesses files based on their content. This project offers a peer-to-peer content-addressable file storage built using Go. It also implements a peer-to-peer library built on top of TCP from scratch. This custom network library supports streaming files across the network in chunks, allowing exchange of large files across the network.
+This project implements a **Content Addressable Distributed File System (CADFS)**, leveraging peer-to-peer technology for efficient, encrypted, and fault-tolerant file storage and retrieval. Unlike conventional file systems that rely on hierarchical paths or filenames, CADFS uses **content-based addressing** to identify and access files based on their content. Built with Go, this system includes a custom peer-to-peer networking library on top of TCP, designed from scratch to enable chunk-based file streaming. This allows for efficient transmission of large files across a network of peers.
 
-## Key features
+## Key Features
 
-- Encryption and decryption during data storage and transmission
-- Content addressable storage
-- Distributed storage
-- Data redundancy to ensure fault tolerance
-- Data streaming support to send files in chunks for exchanging large files through the network
+- **Encryption and Decryption**: Files are securely encrypted during storage and transmission.
+- **Content Addressable Storage**: Files are identified and located based on their content rather than traditional filenames or paths.
+- **Peer-to-Peer Distributed Storage**: Files are stored across a distributed network of nodes (peers), ensuring scalability and efficiency.
+- **Data Redundancy**: Multiple copies of files are maintained across peers to provide fault tolerance and reliability.
+- **Data Streaming**: Large files are split into smaller chunks and streamed across the network for efficient data exchange.
 
-## Getting started
+## Getting Started
 
 ### Prerequisites
 
-It is recommended to have Go installed before running the project. Go can be installed from the official [Go website](https://go.dev/doc/install). This project was built using Go version `1.22.2`.
+Before running the project, ensure that Go is installed on your machine. You can install Go from the official [Go website](https://go.dev/doc/install). The project has been tested and built with Go version `1.22.2`.
 
-### Steps to run
+### Installation and Setup
 
-The project dependencies need to be in place for running the project. To install the dependencies, inside the project directory, run:
+To get started with this project, follow these steps:
 
-```go
-go mod tidy
-```
+1. **Clone the Repository**  
+   First, clone this repository to your local machine:
+   ```bash
+   git clone https://github.com/your-username/cadfs.git
+   cd cadfs
+   ```
 
-Once the project dependencies are installed, the project can be run using:
+2. **Install Dependencies**  
+   After cloning the repository, install the necessary dependencies by running:
+   ```bash
+   go mod tidy
+   ```
 
-```go
-make run
-```
+3. **Run the Project**  
+   To run the project, you can use the `Makefile` provided. This will initialize three peers, with one acting as the primary node that broadcasts files to the others.
+   ```bash
+   make run
+   ```
 
-This will spin up three peers and the peer started on port 4000 will create five files and broadcast them to the other peers for redundancy. If successfully run, you will see three folders named `:3000_network`, `:4000_network`, and `:5000_network` in the root of the project directory.
+   Upon successful execution, three directories will be created in the root of the project:
+   - `:3000_network`
+   - `:4000_network`
+   - `:5000_network`
+
+   These directories represent the local file storage for the peers running on ports 3000, 4000, and 5000, respectively. The peer on port 4000 will create five files and distribute them across the network for redundancy.
+
+## How It Works
+
+- **Content Addressing**: Files are hashed and stored based on their unique content hash, making it easy to retrieve files no matter where they are stored in the network.
+- **Encryption**: All files are encrypted before transmission and storage, ensuring that data remains secure during transit and at rest.
+- **File Chunking**: Large files are broken down into smaller, manageable chunks and transmitted across the network in pieces. Once all chunks are received, they are reassembled at the destination.
+- **Data Redundancy**: Each file is replicated and stored on multiple peers. In case a peer goes offline, the system ensures that the file is still available by retrieving it from other peers.
+- **Fault Tolerance**: Due to data redundancy, the system can withstand node failures, ensuring that no data is lost when a peer goes down.
+
+## Contributing
+
+We welcome contributions to improve this project! Feel free to open issues or submit pull requests to propose new features, fix bugs, or enhance documentation.
+
+To contribute:
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Submit a pull request with a detailed description of your changes.
 
 ## License
 
-Usage is provided under the [MIT License](https://opensource.org/license/mit). See LICENSE for the full details.
+This project is licensed under the [MIT License](https://opensource.org/license/mit). See the `LICENSE` file for full details.
